@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.duifenyi.app-mergeReleaseResources-50:/values-v30/values-v30.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ROG\\.gradle\\caches\\transforms-4\\b49858615bb5bbd630076d9b0b5a6740\\transformed\\material3-release\\res\\values-v30\\values-v30.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "72",
+                        "endOffsets": "123"
+                    }
+                }
+            ]
+        }
+    ]
+}

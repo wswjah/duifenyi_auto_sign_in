@@ -1,0 +1,169 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.duifenyi.app"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="35" />
+10
+11    <!-- 网络权限 -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:5:5-67
+12-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:5:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:6:5-79
+13-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:6:22-76
+14
+15    <!-- 定位权限 (定位签到需要) -->
+16    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+16-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:9:5-79
+16-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:9:22-76
+17    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+17-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:10:5-81
+17-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:10:22-78
+18
+19    <!-- 前台服务权限 -->
+20    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+20-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:13:5-77
+20-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:13:22-74
+21    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+21-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:14:5-89
+21-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:14:22-86
+22
+23    <!-- 剪贴板读取 (Android 10+) -->
+24    <uses-permission android:name="android.permission.READ_CLIPBOARD" />
+24-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:17:5-73
+24-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:17:22-70
+25
+26    <!-- Android 11+ 包可见性：允许与微信交互 -->
+27    <queries>
+27-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:20:5-22:15
+28        <package android:name="com.tencent.mm" />
+28-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:21:9-50
+28-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:21:18-47
+29    </queries>
+30
+31    <permission
+31-->[androidx.core:core:1.13.1] C:\Users\ROG\.gradle\caches\transforms-4\1938adbed7f6eb7a8793af6578215887\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+32        android:name="com.duifenyi.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+32-->[androidx.core:core:1.13.1] C:\Users\ROG\.gradle\caches\transforms-4\1938adbed7f6eb7a8793af6578215887\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+33        android:protectionLevel="signature" />
+33-->[androidx.core:core:1.13.1] C:\Users\ROG\.gradle\caches\transforms-4\1938adbed7f6eb7a8793af6578215887\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+34
+35    <uses-permission android:name="com.duifenyi.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+35-->[androidx.core:core:1.13.1] C:\Users\ROG\.gradle\caches\transforms-4\1938adbed7f6eb7a8793af6578215887\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+35-->[androidx.core:core:1.13.1] C:\Users\ROG\.gradle\caches\transforms-4\1938adbed7f6eb7a8793af6578215887\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+36
+37    <application
+37-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:24:5-45:19
+38        android:name="com.duifenyi.app.DuifenyiApp"
+38-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:25:9-36
+39        android:allowBackup="true"
+39-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:26:9-35
+40        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+40-->[androidx.core:core:1.13.1] C:\Users\ROG\.gradle\caches\transforms-4\1938adbed7f6eb7a8793af6578215887\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+41        android:extractNativeLibs="false"
+42        android:icon="@mipmap/ic_launcher"
+42-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:27:9-43
+43        android:label="@string/app_name"
+43-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:28:9-41
+44        android:networkSecurityConfig="@xml/network_security_config"
+44-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:32:9-69
+45        android:supportsRtl="true"
+45-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:29:9-35
+46        android:theme="@style/Theme.Duifenyi"
+46-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:30:9-46
+47        android:usesCleartextTraffic="true" >
+47-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:31:9-44
+48        <activity
+48-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:34:9-43:20
+49            android:name="com.duifenyi.app.MainActivity"
+49-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:35:13-41
+50            android:exported="true"
+50-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:36:13-36
+51            android:theme="@style/Theme.Duifenyi"
+51-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:38:13-50
+52            android:windowSoftInputMode="adjustResize" >
+52-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:37:13-55
+53            <intent-filter>
+53-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:39:13-42:29
+54                <action android:name="android.intent.action.MAIN" />
+54-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:40:17-69
+54-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:40:25-66
+55
+56                <category android:name="android.intent.category.LAUNCHER" />
+56-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:41:17-77
+56-->D:\VS\Program\android\duifenyi\app\src\main\AndroidManifest.xml:41:27-74
+57            </intent-filter>
+58        </activity>
+59
+60        <provider
+60-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ROG\.gradle\caches\transforms-4\cdef4f7cf2e5c0f072cde5a0c7f6a239\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+61            android:name="androidx.startup.InitializationProvider"
+61-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ROG\.gradle\caches\transforms-4\cdef4f7cf2e5c0f072cde5a0c7f6a239\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+62            android:authorities="com.duifenyi.app.androidx-startup"
+62-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ROG\.gradle\caches\transforms-4\cdef4f7cf2e5c0f072cde5a0c7f6a239\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+63            android:exported="false" >
+63-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ROG\.gradle\caches\transforms-4\cdef4f7cf2e5c0f072cde5a0c7f6a239\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+64            <meta-data
+64-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ROG\.gradle\caches\transforms-4\cdef4f7cf2e5c0f072cde5a0c7f6a239\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+65                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+65-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ROG\.gradle\caches\transforms-4\cdef4f7cf2e5c0f072cde5a0c7f6a239\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+66                android:value="androidx.startup" />
+66-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ROG\.gradle\caches\transforms-4\cdef4f7cf2e5c0f072cde5a0c7f6a239\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+67            <meta-data
+67-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\ROG\.gradle\caches\transforms-4\7bd730e1a7f6644492a61fc5728c40d0\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:29:13-31:52
+68                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+68-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\ROG\.gradle\caches\transforms-4\7bd730e1a7f6644492a61fc5728c40d0\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:30:17-78
+69                android:value="androidx.startup" />
+69-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\ROG\.gradle\caches\transforms-4\7bd730e1a7f6644492a61fc5728c40d0\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:31:17-49
+70            <meta-data
+70-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+71                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+71-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+72                android:value="androidx.startup" />
+72-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+73        </provider>
+74
+75        <receiver
+75-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+76            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+76-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+77            android:directBootAware="false"
+77-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+78            android:enabled="true"
+78-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+79            android:exported="true"
+79-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+80            android:permission="android.permission.DUMP" >
+80-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+81            <intent-filter>
+81-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+82                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+82-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+82-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+83            </intent-filter>
+84            <intent-filter>
+84-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+85                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+85-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+85-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+86            </intent-filter>
+87            <intent-filter>
+87-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+88                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+88-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+88-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+89            </intent-filter>
+90            <intent-filter>
+90-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+91                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+91-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+91-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ROG\.gradle\caches\transforms-4\209c616b272fb48760371d92ee728e1e\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+92            </intent-filter>
+93        </receiver>
+94    </application>
+95
+96</manifest>

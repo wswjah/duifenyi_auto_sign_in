@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "com.duifenyi.app-release-52:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.duifenyi.app-main-53:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.duifenyi.app-release-52:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.duifenyi.app-main-53:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.duifenyi.app-release-52:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.duifenyi.app-main-53:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.duifenyi.app-release-52:/raw_locations.json.flat",
+        "source": "com.duifenyi.app-main-53:/raw/locations.json"
+    },
+    {
+        "merged": "com.duifenyi.app-release-52:/xml_network_security_config.xml.flat",
+        "source": "com.duifenyi.app-main-53:/xml/network_security_config.xml"
+    }
+]
