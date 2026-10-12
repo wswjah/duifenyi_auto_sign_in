@@ -1,6 +1,6 @@
 # 对分易签到助手 - Android 版
 
-自动监控对分易课程签到活动，支持**数字码**、**二维码**、**定位**、**汉字**四种签到类型。基于 Python 版 [duifene_v2](https://github.com) 的核心逻辑，使用 Kotlin + Jetpack Compose 重写为 Android 原生应用。
+自动监控对分易课程签到活动，支持**数字码**、**二维码**、**定位**、**汉字**四种签到类型。基于 Python 版 [duifene_v2](https://github.com/XiYuNPC/duifene-2.0) 的核心逻辑，使用 Kotlin + Jetpack Compose 重写为 Android 原生应用。
 
 ## 功能
 
