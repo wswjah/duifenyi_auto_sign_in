@@ -1,0 +1,29 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.kotlin/
+
+# Local configuration (machine-specific, contains SDK paths)
+local.properties
+
+# Captures / native
+captures/
+.externalNativeBuild/
+.cxx/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Signed release output (APK 通过 GitHub Releases 分发)
+app/release/
+
+# Keystore files
+*.jks
+*.keystore
+keystore.properties
