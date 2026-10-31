@@ -2,6 +2,8 @@ package com.duifenyi.app.data.network
 
 import org.junit.Assert.*
 import org.junit.Test
+import okio.Buffer
+import java.net.URLDecoder
 
 class CheckInProtocolTest {
     private val gridResponse = """
@@ -47,5 +49,20 @@ class CheckInProtocolTest {
         assertThrows(IllegalArgumentException::class.java) {
             CheckInProtocol.parseHanziGrid(gridResponse.replace("隗", ""), "123")
         }
+    }
+
+    @Test fun formEncodesHanziOnceInSelectionOrder() {
+        val buffer = Buffer()
+        CheckInProtocol.codeCheckInBody("test-user", "隗亍箧荥").writeTo(buffer)
+        val body = buffer.readUtf8()
+        assertTrue(body.startsWith("action=studentcheckin&studentid=test-user&checkincode=%"))
+        assertFalse(body.contains("%25"))
+        assertEquals("action=studentcheckin&studentid=test-user&checkincode=隗亍箧荥", URLDecoder.decode(body, "UTF-8"))
+    }
+
+    @Test fun formPreservesNumericLeadingZero() {
+        val buffer = Buffer()
+        CheckInProtocol.codeCheckInBody("test-user", "0123").writeTo(buffer)
+        assertEquals("action=studentcheckin&studentid=test-user&checkincode=0123", buffer.readUtf8())
     }
 }

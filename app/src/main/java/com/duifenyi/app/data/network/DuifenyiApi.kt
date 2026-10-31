@@ -318,8 +318,7 @@ object DuifenyiApi {
     /** 数字码签到 */
     suspend fun doCodeCheckIn(studentUid: String, code: String): String = withContext(Dispatchers.IO) {
         try {
-            val body = "action=studentcheckin&studentid=$studentUid&checkincode=$code"
-                .toRequestBody(MEDIA_TYPE_FORM)
+            val body = CheckInProtocol.codeCheckInBody(studentUid, code)
             val request = Request.Builder()
                 .url("$HOST/_CheckIn/CheckIn.ashx")
                 .header("Referer", "$HOST/_CheckIn/MB/CheckInStudent.aspx?moduleid=16&pasd=")
@@ -346,10 +345,8 @@ object DuifenyiApi {
     /** 汉字签到 (type 4) — 与数字码共用 CheckIn.ashx，签到码需 UTF-8 URL 编码 */
     suspend fun doHanziCheckIn(studentUid: String, code: String): String = withContext(Dispatchers.IO) {
         try {
-            // 汉字签到码需要 URL 编码后发送 (如 頔酢郏倦 → %E9%A0%94%E9%84%A2%E9%83%8F%E5%81%AC)
-            val encodedCode = java.net.URLEncoder.encode(code, "UTF-8").replace("+", "%20")
-            val body = "action=studentcheckin&studentid=$studentUid&checkincode=$encodedCode"
-                .toRequestBody(MEDIA_TYPE_FORM)
+            // FormBody 对用户点选的汉字做一次 UTF-8 表单编码。
+            val body = CheckInProtocol.codeCheckInBody(studentUid, code)
             val match = "${Math.random()}"
             val request = Request.Builder()
                 .url("$HOST/_CheckIn/CheckIn.ashx")

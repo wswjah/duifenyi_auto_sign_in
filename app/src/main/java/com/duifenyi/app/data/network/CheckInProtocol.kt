@@ -5,10 +5,17 @@ import com.duifenyi.app.data.model.HanziOption
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
+import okhttp3.FormBody
 
 /** 保留 JSON 数字原样，避免 Map<Double> 中转把类型 4 变成字符串 "4.0"。 */
 internal object CheckInProtocol {
     private val gson = Gson()
+
+    fun codeCheckInBody(studentUid: String, code: String): FormBody = FormBody.Builder()
+        .add("action", "studentcheckin")
+        .add("studentid", studentUid)
+        .add("checkincode", code)
+        .build()
 
     fun parseRecords(body: String): List<CheckInRecord> {
         val json = JsonParser.parseString(body).asJsonObject
