@@ -41,6 +41,8 @@ class CheckInMonitor(
                             }
                         }
                     }
+                } catch (e: CancellationException) {
+                    throw e
                 } catch (e: Exception) {
                     Log.e(TAG, "Poll error", e)
                     repository.addLog(LogLevel.ERROR, "监控异常: ${e.message}")

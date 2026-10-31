@@ -204,6 +204,24 @@ class DuifenyiRepository(private val prefs: PreferencesManager) {
     // ─── 监控 ──────────────────────────────────────────
 
     private val doneIds = mutableSetOf<String>()
+    private val skippedIds = mutableSetOf<String>()
+    private val manualController = ManualCheckInController(
+        fetchGrid = DuifenyiApi::fetchHanziGrid,
+        fetchRecord = { classId, uid, recordId ->
+            val records = DuifenyiApi.fetchCheckInRecords(classId, uid)
+                ?: error("无法读取签到状态，请检查网络或重新登录")
+            records.find { it.id == recordId }
+        },
+        submit = { type, uid, code ->
+            if (type == "4") DuifenyiApi.doHanziCheckIn(uid, code)
+            else DuifenyiApi.doCodeCheckIn(uid, code)
+        }
+    )
+    val manualCheckIn = manualController.state
+
+    fun respondToManualCheckIn(requestId: String, action: ManualCheckInAction) =
+        manualController.respond(requestId, action)
+
     private var currentCourse: Course? = null
     private var delaySeconds: Int = 0
     private var isRunning = false
@@ -212,15 +230,18 @@ class DuifenyiRepository(private val prefs: PreferencesManager) {
         currentCourse = course
         delaySeconds = delay
         doneIds.clear()
+        skippedIds.clear()
         isRunning = true
         _isMonitoring.value = true
     }
 
     fun stopMonitoring() {
+        manualController.cancel()
         isRunning = false
         _isMonitoring.value = false
         currentCourse = null
         doneIds.clear()
+        skippedIds.clear()
     }
 
     /**
@@ -255,34 +276,40 @@ class DuifenyiRepository(private val prefs: PreferencesManager) {
             else -> "未知"
         }
 
+        addLog(LogLevel.INFO, "发现待签到! ID:$rid 类型:$typeName")
+
+        if (ct == "1" || ct == "4") {
+            addLog(LogLevel.INFO, "等待手动${if (ct == "4") "点选汉字" else "输入数字码"}，建议优先使用微信官方签到")
+            val result = manualController.run(course, pending, studentUid)
+            val message = when (result) {
+                ManualCheckInResult.CONFIRMED -> {
+                    doneIds.add(rid)
+                    addLog(LogLevel.OK, "已核实签到成功! ID:$rid")
+                    "签到成功"
+                }
+                ManualCheckInResult.SKIPPED -> {
+                    skippedIds.add(rid)
+                    "已跳过本次手动签到，请使用微信完成"
+                }
+                ManualCheckInResult.EXPIRED -> {
+                    skippedIds.add(rid)
+                    "签到活动已结束或已失效，请在微信中核实"
+                }
+            }
+            if (result != ManualCheckInResult.CONFIRMED) addLog(LogLevel.WARN, message)
+            return PollResult.Continue(message)
+        }
+
+        // 其他方式保持原有单次处理行为，本次不调整二维码签到。
         doneIds.add(rid)
-        addLog(LogLevel.INFO, "发现待签到! ID:$rid 类型:$typeName 签到码:${pending.checkInCode.ifEmpty { "无" }}")
 
         if (delaySeconds > 0) {
             addLog(LogLevel.INFO, "将在 $delaySeconds 秒后自动签到...")
             kotlinx.coroutines.delay(delaySeconds * 1000L)
         }
 
-        // 对于数字码签到，使用记录中的 CheckInCode
         val result = when (ct) {
-            "1" -> {
-                val code = pending.checkInCode
-                if (code.isNotEmpty()) {
-                    DuifenyiApi.doCodeCheckIn(studentUid, code)
-                } else {
-                    "无签到码"
-                }
-            }
             "2" -> DuifenyiApi.doQRCheckIn(rid)
-            "4" -> {
-                // 汉字签到：签到码明文下发，提交前需 UTF-8 URL 编码
-                val code = pending.checkInCode
-                if (code.isNotEmpty()) {
-                    DuifenyiApi.doHanziCheckIn(studentUid, code)
-                } else {
-                    "无签到码"
-                }
-            }
             "3" -> {
                 var (lng, lat) = getCoordinates(course.courseName)
                 if (lng.isEmpty()) {
@@ -323,7 +350,7 @@ class DuifenyiRepository(private val prefs: PreferencesManager) {
     private fun findPendingRecord(records: List<CheckInRecord>): CheckInRecord? {
         val now = LocalDateTime.now()
         for (r in records) {
-            if (r.id in doneIds) continue
+            if (r.id in doneIds || r.id in skippedIds || r.id.isBlank()) continue
             if (r.checkInStatus.isNotEmpty() || r.checkInDate.isNotEmpty() || r.studentID.isNotEmpty()) continue
             if (r.statusID == "1" || r.statusName == "出勤") continue
             if (r.canApply != "1") continue

@@ -3,13 +3,16 @@ package com.duifenyi.app.data.network
 import android.util.Log
 import com.duifenyi.app.data.model.CheckInRecord
 import com.duifenyi.app.data.model.Course
+import com.duifenyi.app.data.model.HanziOption
 import com.duifenyi.app.data.model.LocationConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -59,9 +62,10 @@ object DuifenyiApi {
         .sslSocketFactory(sslContext.socketFactory, trustAllManager as X509TrustManager)
         .hostnameVerifier { _, _ -> true }
         .addInterceptor { chain ->
-            val request = chain.request().newBuilder()
-                .header("User-Agent", DESKTOP_UA)
-                .build()
+            val original = chain.request()
+            val request = if (original.header("User-Agent") == null) {
+                original.newBuilder().header("User-Agent", DESKTOP_UA).build()
+            } else original
             chain.proceed(request)
         }
         .build()
@@ -275,17 +279,13 @@ object DuifenyiApi {
                     .header("Referer", "$HOST/_UserCenter/MB/index.aspx")
                     .post(body)
                     .build()
-                val response = client.newCall(request).execute()
-                if (response.code != 200) return@withContext null
-                val respBody = response.body?.string() ?: return@withContext null
-
-                val json = gson.fromJson(respBody, Map::class.java) ?: return@withContext null
-                if (json["msg"]?.toString() != "1") return@withContext null
-                val rows = json["rows"]
-                if (rows !is List<*>) return@withContext null
-
-                val type = object : TypeToken<List<CheckInRecord>>() {}.type
-                return@withContext gson.fromJson(gson.toJson(rows), type)
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) return@withContext null
+                    val respBody = response.body?.string() ?: return@withContext null
+                    CheckInProtocol.parseRecords(respBody)
+                }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Log.e(TAG, "fetchCheckInRecords failed", e)
                 null
@@ -294,11 +294,31 @@ object DuifenyiApi {
 
     // ─── 签到执行 ──────────────────────────────────────
 
+    /** 正常学生流程只提供九个候选字，不提供正确的四字答案。 */
+    suspend fun fetchHanziGrid(studentUid: String, checkInId: String): List<HanziOption> =
+        withContext(Dispatchers.IO) {
+            val body = FormBody.Builder()
+                .add("action", "hanzigrid")
+                .add("studentid", studentUid)
+                .build()
+            val request = Request.Builder()
+                .url("$HOST/_CheckIn/CheckIn.ashx")
+                .header("User-Agent", MOBILE_WX_UA)
+                .header("Referer", "$HOST/_CheckIn/MB/HanziCheckInStudent.aspx?match=${Math.random()}")
+                .header("X-Requested-With", "XMLHttpRequest")
+                .header("Origin", HOST)
+                .post(body)
+                .build()
+            client.newCall(request).execute().use { response ->
+                check(response.isSuccessful) { "候选字加载失败，HTTP ${response.code}" }
+                CheckInProtocol.parseHanziGrid(response.body?.string().orEmpty(), checkInId)
+            }
+        }
+
     /** 数字码签到 */
     suspend fun doCodeCheckIn(studentUid: String, code: String): String = withContext(Dispatchers.IO) {
         try {
-            val body = "action=studentcheckin&studentid=$studentUid&checkincode=$code"
-                .toRequestBody(MEDIA_TYPE_FORM)
+            val body = CheckInProtocol.codeCheckInBody(studentUid, code)
             val request = Request.Builder()
                 .url("$HOST/_CheckIn/CheckIn.ashx")
                 .header("Referer", "$HOST/_CheckIn/MB/CheckInStudent.aspx?moduleid=16&pasd=")
@@ -325,10 +345,8 @@ object DuifenyiApi {
     /** 汉字签到 (type 4) — 与数字码共用 CheckIn.ashx，签到码需 UTF-8 URL 编码 */
     suspend fun doHanziCheckIn(studentUid: String, code: String): String = withContext(Dispatchers.IO) {
         try {
-            // 汉字签到码需要 URL 编码后发送 (如 頔酢郏倦 → %E9%A0%94%E9%84%A2%E9%83%8F%E5%81%AC)
-            val encodedCode = java.net.URLEncoder.encode(code, "UTF-8").replace("+", "%20")
-            val body = "action=studentcheckin&studentid=$studentUid&checkincode=$encodedCode"
-                .toRequestBody(MEDIA_TYPE_FORM)
+            // FormBody 对用户点选的汉字做一次 UTF-8 表单编码。
+            val body = CheckInProtocol.codeCheckInBody(studentUid, code)
             val match = "${Math.random()}"
             val request = Request.Builder()
                 .url("$HOST/_CheckIn/CheckIn.ashx")

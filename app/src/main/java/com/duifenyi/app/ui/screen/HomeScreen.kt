@@ -36,6 +36,13 @@ fun HomeScreen(
     val isMonitoring by viewModel.repository.isMonitoring.collectAsState()
     val delaySeconds by viewModel.delaySeconds.collectAsState()
     val selectedLocationName by viewModel.repository.selectedLocationName.collectAsState()
+    val manualCheckIn by viewModel.repository.manualCheckIn.collectAsState()
+
+    manualCheckIn?.let { request ->
+        ManualCheckInDialog(state = request) { action ->
+            viewModel.respondToManualCheckIn(request.requestId, action)
+        }
+    }
 
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
