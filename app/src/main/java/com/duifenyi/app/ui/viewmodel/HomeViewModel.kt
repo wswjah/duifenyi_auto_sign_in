@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.duifenyi.app.data.local.PreferencesManager
 import com.duifenyi.app.data.model.Course
 import com.duifenyi.app.data.model.LogLevel
+import com.duifenyi.app.data.model.ManualCheckInAction
 import com.duifenyi.app.data.network.DuifenyiApi
 import com.duifenyi.app.data.repository.DuifenyiRepository
 import com.duifenyi.app.service.CheckInMonitor
@@ -70,6 +71,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         monitor.stop()
         repository.stopMonitoring()
     }
+
+    fun respondToManualCheckIn(requestId: String, action: ManualCheckInAction) =
+        repository.respondToManualCheckIn(requestId, action)
 
     fun getCoordinateForCourse(courseName: String): Pair<String, String> {
         return repository.getCoordinates(courseName)
